@@ -4,17 +4,21 @@ This repo provides a basic pytorch implementation of the Variational Autoencoder
 
 The implementation is specific to the binarized MNIST dataset, even if it can be easily adapted for other kind of data.
 
-Note also that both `p(z)` and `q(z|x)` are Gaussian. Thus, as shown in the paper, the `KL` divergence has a closed-form expression.
+Note also that – again, in this implementation – both `p(z)` and `q(z|x)` are Gaussian. Thus, as shown in the paper, the `KL divergence` has a closed-form expression.
 
 ## Training and generating images
 
 To train the model and generate images, run 
 
-`python main.py`
+```
+python main.py
+```
 
 One may also pass some additional parameters through the command line. For instance, run
 
-`python main.py -D 10`
+```
+python main.py -D 10
+```
 
 to set the dimensionality of the latent space equal to `10`.
 

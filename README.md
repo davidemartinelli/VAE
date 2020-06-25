@@ -28,4 +28,4 @@ For the full list of the command line arguments, see the script `args.py`.
 
 Additionally, if `D=2`, the learned data manifold will be produced as well. Here is an example of it:
 
-![manifold](images/manifold_hl:1_hu:500_D:2_e:20.png)
+![manifold](images/manifold_hl:1_hu:500_D:2_b:128_L:10_e:20.png)

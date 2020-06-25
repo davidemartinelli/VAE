@@ -5,6 +5,7 @@ parser = argparse.ArgumentParser()
 #training
 parser.add_argument('-e', type=int, default=20, help='Number of training epochs. Default: 20')
 parser.add_argument('-b', type=int, default=128, help='Batch size. Default: 128')
+parser.add_argument('-L', type=int, default=10, help='Number of samples per datapoint during optimization. Default: 10')
 parser.add_argument('-lr', type=float, default=1e-3, help='Learning rate. Default: 1e-3')
 
 #model

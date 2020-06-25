@@ -29,14 +29,18 @@ for e in range(args.e):
     #training
     for images, labels in train_loader:
         images = images.to(model.device)
+        loss = 0
 
-        mu, std, out = model(images)
+        for l in range(args.L):
+            mu, std, out = model(images)
 
-        #computing the loss
-        kl = ((1 + torch.log(std ** 2) - mu ** 2 - std ** 2) / 2).sum()
-        log_prob = (images * torch.log(out + 1e-7) + (1 - images) * torch.log(1 - out + 1e-7)).sum()
-        loss = - (kl + log_prob) * len(train_loader) / args.b 
-    
+            #computing the loss
+            kl = ((1 + torch.log(std ** 2) - mu ** 2 - std ** 2) / 2).sum()
+            log_prob = (images * torch.log(out + 1e-7) + (1 - images) * torch.log(1 - out + 1e-7)).sum()
+            loss += - (kl + log_prob) / args.L
+
+        loss *= len(train_loader) / args.b 
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -65,13 +69,13 @@ samples = model.sample(n_samples=64)
 if not os.path.exists(IMAGES_FOLDER):
             os.mkdir(IMAGES_FOLDER)
 
-torchvision.utils.save_image(samples, os.path.join(IMAGES_FOLDER, f'samples_hl:{args.hl}_hu:{args.hu}_D:{args.D}_e:{args.e}.png'), nrow=8, padding=0)
+torchvision.utils.save_image(samples, os.path.join(IMAGES_FOLDER, f'samples_hl:{args.hl}_hu:{args.hu}_D:{args.D}_b:{args.b}_L:{args.L}_e:{args.e}.png'), nrow=8, padding=0)
 
 print('Done!')
 
 if args.D == 2:
     print('Producing the learned data manifold... ', end='')
     manifold = model.generate_manifold(MANIFOLD_WIDTH)
-    torchvision.utils.save_image(manifold, os.path.join(IMAGES_FOLDER, f'manifold_hl:{args.hl}_hu:{args.hu}_D:{args.D}_e:{args.e}.png'), nrow=MANIFOLD_WIDTH, padding=0)
+    torchvision.utils.save_image(manifold, os.path.join(IMAGES_FOLDER, f'manifold_hl:{args.hl}_hu:{args.hu}_D:{args.D}_b:{args.b}_L:{args.L}_e:{args.e}.png'), nrow=MANIFOLD_WIDTH, padding=0)
 
     print('Done!')
